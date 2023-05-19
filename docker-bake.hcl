@@ -1,11 +1,7 @@
 group "linux" {
   targets = [
-    "oracleLinux_jdk11",
-    "alpine_jdk17",
-    "alpine_jdk11",
-    "debian_jdk11",
-    "debian_jdk17",
-  ]
+    "oraclelinux_jdk11"
+ ]
 }
 
 group "linux-arm64" {
@@ -33,7 +29,7 @@ variable "REGISTRY" {
 }
 
 variable "JENKINS_REPO" {
-  default = "jenkins/ssh-agent"
+  default = "zanderfortinbras/ssh-agent"
 }
 
 variable "ON_TAG" {
@@ -67,13 +63,13 @@ target "alpine_jdk11" {
   platforms = ["linux/amd64"]
 }
 
-target "oracleLinux_jdk11" {
-  dockerfile = "11/oracleLinux/Dockerfile"
+target "oraclelinux_jdk11" {
+  dockerfile = "11/oraclelinux/Dockerfile"
   context = "."
   tags = [
     equal(ON_TAG, "true") ? "${REGISTRY}/${JENKINS_REPO}:${VERSION}": "",
     equal(ON_TAG, "true") ? "${REGISTRY}/${JENKINS_REPO}:${VERSION}-jdk11": "",
-    "${REGISTRY}/${JENKINS_REPO}:oracleLinux-jdk11"
+    "${REGISTRY}/${JENKINS_REPO}:oraclelinux-jdk11"
   ]
   platforms = ["linux/amd64", "linux/arm64", "linux/s390x", "linux/ppc64le"]
 }

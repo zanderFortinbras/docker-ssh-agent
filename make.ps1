@@ -9,7 +9,7 @@ Param(
 )
 
 $Repository = 'ssh-agent'
-$Organization = 'jenkins'
+$Organization = 'zanderfortinbras'
 
 if(![String]::IsNullOrWhiteSpace($env:DOCKERHUB_REPO)) {
     $Repository = $env:DOCKERHUB_REPO
