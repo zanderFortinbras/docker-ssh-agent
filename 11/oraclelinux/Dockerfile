@@ -63,8 +63,7 @@ COPY setup-sshd /usr/local/bin/setup-sshd
 
 EXPOSE 22
 
-ENTRYPOINT ["tail", "-f", "/dev/null"]
-#ENTRYPOINT ["setup-sshd"]
+ENTRYPOINT ["setup-sshd"]
 
 LABEL \
     org.opencontainers.image.vendor="Jenkins project" \
