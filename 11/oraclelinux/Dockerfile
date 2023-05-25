@@ -29,6 +29,7 @@ RUN groupadd -g ${gid} ${group} \
 RUN microdnf -y install \
             git-lfs \
             less \
+            nc \
             openssh-server \
             patch \
            && microdnf clean all
