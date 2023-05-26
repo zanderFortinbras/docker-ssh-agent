@@ -29,7 +29,7 @@ variable "REGISTRY" {
 }
 
 variable "JENKINS_REPO" {
-  default = "zanderfortinbras/ssh-agent"
+  default = "jenkins/ssh-agent"
 }
 
 variable "ON_TAG" {

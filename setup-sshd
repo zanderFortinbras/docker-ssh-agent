@@ -76,8 +76,7 @@ if [[ $# -gt 0 ]]; then
 fi
 
 # generate host keys if not present
-ssh-keygen -A
-
+ssh-keygen -A -t dsa
 whoami
 
 # do not detach (-D), log to stderr (-e), passthrough other arguments
