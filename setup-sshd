@@ -78,5 +78,7 @@ fi
 # generate host keys if not present
 ssh-keygen -A
 
+whoami
+
 # do not detach (-D), log to stderr (-e), passthrough other arguments
 exec /usr/sbin/sshd -D -e "${@}"

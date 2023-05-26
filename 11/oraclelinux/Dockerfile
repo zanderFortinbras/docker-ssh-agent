@@ -36,12 +36,7 @@ RUN microdnf -y install \
 
 # setup SSH server
 RUN sed -i /etc/ssh/sshd_config \
-        -e 's/#HostKeyAlgorithms.*/HostKeyAlgorithms ssh-rsa,ssh-rsa-cert-v01@openssh.com/' \
-        -e 's/#PubkeyAcceptedAlgorithms.*/PubkeyAcceptedAlgorithms +ssh-rsa,ssh-rsa-cert-v01@openssh.com/' \
         -e 's/#PermitRootLogin.*/PermitRootLogin no/' \
-        -e 's/#AddressFamily.*/AddressFamily inet/' \
-        -e 's/#ClientAliveInterval.*/ClientAliveInterval 1200/' \
-        -e 's/#ClientAliveCountMax.*/ClientAliveCountMax 3/' \
         -e 's/#RSAAuthentication.*/RSAAuthentication yes/'  \
         -e 's/#PasswordAuthentication.*/PasswordAuthentication no/' \
         -e 's/#SyslogFacility.*/SyslogFacility AUTH/' \
@@ -64,7 +59,12 @@ COPY setup-sshd /usr/local/bin/setup-sshd
 
 EXPOSE 22
 
+USER root
 ENTRYPOINT ["setup-sshd"]
+
+
+
+
 
 LABEL \
     org.opencontainers.image.vendor="Jenkins project" \
