@@ -76,7 +76,10 @@ if [[ $# -gt 0 ]]; then
 fi
 
 # generate host keys if not present
-ssh-keygen -t dsa
+
+ssh-keygen -t ecdsa -f /root/.ssh/id_ecdsa -q -P ""
+
+
 whoami
 
 # do not detach (-D), log to stderr (-e), passthrough other arguments

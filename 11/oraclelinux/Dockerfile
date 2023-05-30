@@ -40,6 +40,7 @@ RUN sed -i /etc/ssh/sshd_config \
         -e 's/#RSAAuthentication.*/RSAAuthentication yes/'  \
         -e 's/#PasswordAuthentication.*/PasswordAuthentication no/' \
         -e 's/#SyslogFacility.*/SyslogFacility AUTH/' \
+        -e 's/#HostKey \/etc\/ssh\/ssh_host_ecdsa_key.*/HostKey \/root\/.ssh\/id_ecdsa/' \
         -e 's/#LogLevel.*/LogLevel INFO/' && \
     mkdir /var/run/sshd
 
