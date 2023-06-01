@@ -36,11 +36,12 @@ RUN microdnf -y install \
 
 # setup SSH server
 RUN sed -i /etc/ssh/sshd_config \
+        -e 's/#Banner none.*/PubkeyAcceptedAlgorithms +ssh-rsa,ssh-rsa-cert-v01@openssh.com/' \
+        -e 's/# no default banner path.*/HostKeyAlgorithms ssh-rsa,ssh-rsa-cert-v01@openssh.com/' \
         -e 's/#PermitRootLogin.*/PermitRootLogin no/' \
         -e 's/#RSAAuthentication.*/RSAAuthentication yes/'  \
         -e 's/#PasswordAuthentication.*/PasswordAuthentication no/' \
         -e 's/#SyslogFacility.*/SyslogFacility AUTH/' \
-        -e 's/#HostKey \/etc\/ssh\/ssh_host_ecdsa_key.*/HostKey \/root\/.ssh\/id_ecdsa/' \
         -e 's/#LogLevel.*/LogLevel INFO/' && \
     mkdir /var/run/sshd
 

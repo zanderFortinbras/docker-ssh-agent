@@ -77,7 +77,7 @@ fi
 
 # generate host keys if not present
 
-ssh-keygen -t ecdsa -f /root/.ssh/id_ecdsa -q -P ""
+ssh-keygen -A
 
 
 whoami
