@@ -32,11 +32,12 @@ RUN microdnf -y install \
             nc \
             openssh-server \
             patch \
+            hostname \
            && microdnf clean all
 
 # setup SSH server
 RUN sed -i /etc/ssh/sshd_config \
-        -e 's/#Banner none.*/PubkeyAcceptedAlgorithms +ssh-rsa,ssh-rsa-cert-v01@openssh.com/' \
+        -e 's/#PermitRootLogin.*/PubkeyAcceptedAlgorithms +ssh-rsa,ssh-rsa-cert-v01@openssh.com/' \
         -e 's/# no default banner path.*/HostKeyAlgorithms ssh-rsa,ssh-rsa-cert-v01@openssh.com/' \
         -e 's/#PermitRootLogin.*/PermitRootLogin no/' \
         -e 's/#RSAAuthentication.*/RSAAuthentication yes/'  \
@@ -59,7 +60,7 @@ RUN echo "PATH=${PATH}" >> /etc/environment
 
 COPY setup-sshd /usr/local/bin/setup-sshd
 
-EXPOSE 22
+#EXPOSE 22
 
 USER root
 ENTRYPOINT ["setup-sshd"]

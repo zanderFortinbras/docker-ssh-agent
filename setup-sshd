@@ -43,6 +43,8 @@ write_key() {
   chmod 0700 -R "${JENKINS_AGENT_HOME}/.ssh"
 }
 
+echo "start 21"
+
 if [[ ${JENKINS_AGENT_SSH_PUBKEY} == ssh-* ]]; then
   write_key "${JENKINS_AGENT_SSH_PUBKEY}"
 fi
@@ -52,7 +54,7 @@ fi
 
 # ensure variables passed to docker container are also exposed to ssh sessions
 env | grep _ >> /etc/environment
-
+ssh-keygen -A
 if [[ $# -gt 0 ]]; then
   echo "${0##*/} params: $@"
 
@@ -72,15 +74,15 @@ if [[ $# -gt 0 ]]; then
   else
     echo "Executing params: '$@'"
     exec "$@"
+    echo "at r"
   fi
 fi
 
 # generate host keys if not present
+echo "at t" 
 
-ssh-keygen -A
-
-
+echo "at whoami"
 whoami
-
+ls -l /etc/ssh
 # do not detach (-D), log to stderr (-e), passthrough other arguments
-exec /usr/sbin/sshd -D -e "${@}"
+exec /usr/sbin/sshd -D -d -e "${@}"
