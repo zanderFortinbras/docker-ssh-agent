@@ -1,6 +1,8 @@
 group "linux" {
   targets = [
-    "oraclelinux_jdk11"
+    "oraclelinux9_jdk11",
+    "oraclelinux8slim_jdk11",
+    "oraclelinux8_jdk11"
  ]
 }
 
@@ -25,7 +27,7 @@ group "linux-ppc64le" {
 }
 
 variable "REGISTRY" {
-  default = "docker.io"
+  default = "localhost:5000"
 }
 
 variable "JENKINS_REPO" {
@@ -63,13 +65,36 @@ target "alpine_jdk11" {
   platforms = ["linux/amd64"]
 }
 
-target "oraclelinux_jdk11" {
-  dockerfile = "11/oraclelinux/Dockerfile"
+
+target "oraclelinux8_jdk11" {
+  dockerfile = "11/oraclelinux/ol8/Dockerfile"
   context = "."
   tags = [
     equal(ON_TAG, "true") ? "${REGISTRY}/${JENKINS_REPO}:${VERSION}": "",
     equal(ON_TAG, "true") ? "${REGISTRY}/${JENKINS_REPO}:${VERSION}-jdk11": "",
-    "${REGISTRY}/${JENKINS_REPO}:oraclelinux-jdk11"
+    "${REGISTRY}/${JENKINS_REPO}:oraclelinux8-jdk11"
+  ]
+  platforms = ["linux/amd64", "linux/arm64", "linux/s390x", "linux/ppc64le"]
+}
+
+target "oraclelinux8slim_jdk11" {
+  dockerfile = "11/oraclelinux/ol8slim/Dockerfile"
+  context = "."
+  tags = [
+    equal(ON_TAG, "true") ? "${REGISTRY}/${JENKINS_REPO}:${VERSION}": "",
+    equal(ON_TAG, "true") ? "${REGISTRY}/${JENKINS_REPO}:${VERSION}-jdk11": "",
+    "${REGISTRY}/${JENKINS_REPO}:oraclelinux8slim-jdk11"
+  ]
+  platforms = ["linux/amd64", "linux/arm64", "linux/s390x", "linux/ppc64le"]
+}
+
+target "oraclelinux9_jdk11" {
+  dockerfile = "11/oraclelinux/ol9slim/Dockerfile"
+  context = "."
+  tags = [
+    equal(ON_TAG, "true") ? "${REGISTRY}/${JENKINS_REPO}:${VERSION}": "",
+    equal(ON_TAG, "true") ? "${REGISTRY}/${JENKINS_REPO}:${VERSION}-jdk11": "",
+    "${REGISTRY}/${JENKINS_REPO}:oraclelinux9-jdk11"
   ]
   platforms = ["linux/amd64", "linux/arm64", "linux/s390x", "linux/ppc64le"]
 }
