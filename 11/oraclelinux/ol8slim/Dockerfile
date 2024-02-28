@@ -39,12 +39,14 @@ RUN microdnf -y install \
             php-xml \
             curl \
             gnupg2 \
+            tar \
             zip \
             wget \
             unzip \
             findutils \
             telnet \
             vi \
+            yum \
            && microdnf clean all
 CMD ["/bin/php", "-v"]
 # setup SSH server
@@ -84,8 +86,20 @@ COPY ca-bundle.crt /etc/pki/tls/certs/ca-bundle.crt
 #EXPOSE 22
 USER root
 USER root
+RUN yum install tar
+RUN curl -o allure-commandline-2.23.0.tgz -Ls https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.23.0/allure-commandline-2.23.0.tgz
+RUN tar -zxvf allure-commandline-2.23.0.tgz -C /opt/
+RUN ln -s /opt/allure-2.23.0/bin/allure /usr/bin/allure
+RUN allure --version
+ENV ALLURE_HOME=/opt/allure-2.23.0/bin/
+
 ENTRYPOINT ["setup-sshd"]
 RUN ls -lart /usr/local/bin
+RUN php /usr/local/bin/composer.phar --version
+RUN whoami
+RUN sed -i /etc/php.ini \
+        -e 's/memory_limit.*/memory_limit = -1 /' 
+
 LABEL \
     org.opencontainers.image.vendor="Jenkins project" \
     org.opencontainers.image.title="Official Jenkins SSH Agent Docker image" \
