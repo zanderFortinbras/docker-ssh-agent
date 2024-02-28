@@ -1,6 +1,4 @@
 FROM eclipse-temurin:11.0.18_10-jdk-focal AS jre-build
-
-
 RUN jlink \
          --add-modules ALL-MODULE-PATH \
          --no-man-pages \
@@ -29,7 +27,7 @@ RUN groupadd -g ${gid} ${group} \
     && chown -R "${uid}":"${gid}" "${JENKINS_AGENT_HOME}" "${AGENT_WORKDIR}"
 
 
-
+RUN microdnf module enable php:8.1
 RUN microdnf -y install \
             git-lfs \
             less \
@@ -38,15 +36,25 @@ RUN microdnf -y install \
             patch \
             hostname \
             php \
+            php-cli \
+            php-common \
+            php-json \
+            php-mbstring \
+            php-mysqlnd \
+            php-pdo \
+            php-xml \
             curl \
             gnupg2 \
+            tar \
             zip \
             wget \
             unzip \
+            findutils \
+            telnet \
+            vi \
+            yum \
            && microdnf clean all
-
-
-
+CMD ["/bin/php", "-v"]
 # setup SSH server
 RUN sed -i /etc/ssh/sshd_config \
         -e 's/#PermitRootLogin.*/PubkeyAcceptedAlgorithms +ssh-rsa,ssh-rsa-cert-v01@openssh.com/' \
@@ -90,7 +98,7 @@ RUN chown -R "${uid}":"${gid}"  /home/jenkins/.config/composer/
 RUN chown -R "${uid}":"${gid}"  /home/jenkins/.config/composer/composer.json
 
 COPY setup-sshd /usr/local/bin/setup-sshd
-
+COPY ca-bundle.crt /etc/pki/tls/certs/ca-bundle.crt
 #COPY /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem /etc/pki/ca-trust/source/anchors/
 #RUN update-ca-trust
 
@@ -98,10 +106,12 @@ COPY setup-sshd /usr/local/bin/setup-sshd
 
 USER root
 ENTRYPOINT ["setup-sshd"]
-
+RUN php /usr/local/bin/composer.phar --version
 
 RUN ls -lart /usr/local/bin
-
+RUN whoami
+RUN sed -i /etc/php.ini \
+        -e 's/memory_limit.*/memory_limit = -1 /'
 
 LABEL \
     org.opencontainers.image.vendor="Jenkins project" \
