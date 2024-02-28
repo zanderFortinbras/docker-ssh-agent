@@ -1,6 +1,7 @@
 group "linux" {
   targets = [
     "oraclelinux9_jdk11",
+    "oraclelinux9_jdk21",
     "oraclelinux8slim_jdk11",
     "oraclelinux8_jdk11"
  ]
@@ -9,6 +10,7 @@ group "linux" {
 group "linux-arm64" {
   targets = [
     "debian_jdk11",
+    "debian_jdk21",
     "debian_jdk17",
   ]
 }
@@ -16,12 +18,14 @@ group "linux-arm64" {
 group "linux-s390x" {
   targets = [
     "debian_jdk11",
+    "debian_jdk21",
   ]
 }
 
 group "linux-ppc64le" {
   targets = [
     "debian_jdk11",
+    "debian_jdk21",
     "debian_jdk17",
   ]
 }
@@ -95,6 +99,18 @@ target "oraclelinux9_jdk11" {
     equal(ON_TAG, "true") ? "${REGISTRY}/${JENKINS_REPO}:${VERSION}": "",
     equal(ON_TAG, "true") ? "${REGISTRY}/${JENKINS_REPO}:${VERSION}-jdk11": "",
     "${REGISTRY}/${JENKINS_REPO}:oraclelinux9-jdk11"
+  ]
+  platforms = ["linux/amd64", "linux/arm64", "linux/s390x", "linux/ppc64le"]
+}
+
+
+target "oraclelinux9_jdk21" {
+  dockerfile = "21/oraclelinux/ol9slim/Dockerfile"
+  context = "."
+  tags = [
+    equal(ON_TAG, "true") ? "${REGISTRY}/${JENKINS_REPO}:${VERSION}": "",
+    equal(ON_TAG, "true") ? "${REGISTRY}/${JENKINS_REPO}:${VERSION}-jdk21": "",
+    "${REGISTRY}/${JENKINS_REPO}:oraclelinux9-jdk21"
   ]
   platforms = ["linux/amd64", "linux/arm64", "linux/s390x", "linux/ppc64le"]
 }
